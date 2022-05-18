@@ -22,20 +22,25 @@ class Regression:
         self.y = y
         self.X = self.sc.fit_transform(X)
 
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=size_of_test, random_state=0)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            self.X, self.y, test_size=size_of_test, random_state=0)
 
     def run(self):
         scores = []
-        simple_linear = Linear(self.X_train, self.X_test, self.y_train, self.y_test)
+        simple_linear = Linear(self.X_train, self.X_test,
+                               self.y_train, self.y_test)
         scores.append(simple_linear.get_model_scores())
 
-        support_vector = SupportVector(self.X_train, self.X_test, self.y_train, self.y_test)
+        support_vector = SupportVector(
+            self.X_train, self.X_test, self.y_train, self.y_test)
         scores.append(support_vector.get_model_scores())
 
-        decision_tree = DecisionTree(self.X_train, self.X_test, self.y_train, self.y_test)
+        decision_tree = DecisionTree(
+            self.X_train, self.X_test, self.y_train, self.y_test)
         scores.append(decision_tree.get_model_scores())
 
-        random_forest = RandomForest(self.X_train, self.X_test, self.y_train, self.y_test)
+        random_forest = RandomForest(
+            self.X_train, self.X_test, self.y_train, self.y_test)
         scores.append(random_forest.get_model_scores())
 
         df_scores = pd.DataFrame(scores, columns=['Algorithm', 'EVS', 'ME', 'MAE', 'MSE', 'MSLE',
@@ -46,7 +51,8 @@ class Regression:
         pd.set_option('display.max_columns', 11)
         pd.set_option('display.width', 2000)
         print(localisation.messages.regression_result_message)
-        def pdtabulate(df): return tabulate(df, headers='keys', tablefmt='psql', showindex=False)
+        def pdtabulate(df): return tabulate(
+            df, headers='keys', tablefmt='psql', showindex=False)
         print(pdtabulate(df))
         print(localisation.messages.regression_legend)
         print('EVS     ', 'Explained variance score')
@@ -84,9 +90,12 @@ class Linear:
         self.msle = mean_squared_log_error(self.y_test, self.y_pred)
         self.mape = mean_absolute_percentage_error(self.y_test, self.y_pred)
         self.mdae = median_absolute_error(self.y_test, self.y_pred)
-        self.r2vw = r2_score(self.y_test, self.y_pred, multioutput='variance_weighted')
-        self.r2ua = r2_score(self.y_test, self.y_pred, multioutput='uniform_average')
-        self.r2rv = r2_score(self.y_test, self.y_pred, multioutput='raw_values')
+        self.r2vw = r2_score(self.y_test, self.y_pred,
+                             multioutput='variance_weighted')
+        self.r2ua = r2_score(self.y_test, self.y_pred,
+                             multioutput='uniform_average')
+        self.r2rv = r2_score(self.y_test, self.y_pred,
+                             multioutput='raw_values')
 
     def get_model_scores(self):
         return ['Simple Linear', self.evs, self.me, self.mae, self.mse, self.msle, self.mape, self.mdae, self.r2vw, self.r2ua, self.r2rv]
@@ -108,7 +117,7 @@ class SupportVector:
 
         # Fit and test
         regressor = SVR(kernel='rbf')
-        regressor.fit(self.X_train, self.y_train)
+        regressor.fit(self.X_train, np.ravel(self.y_train))
         self.y_pred_temp = regressor.predict(self.X_test).reshape(-1, 1)
         self.y_pred = self.sc.inverse_transform(self.y_pred_temp)
 
@@ -120,9 +129,12 @@ class SupportVector:
         self.msle = mean_squared_log_error(self.y_test, self.y_pred)
         self.mape = mean_absolute_percentage_error(self.y_test, self.y_pred)
         self.mdae = median_absolute_error(self.y_test, self.y_pred)
-        self.r2vw = r2_score(self.y_test, self.y_pred, multioutput='variance_weighted')
-        self.r2ua = r2_score(self.y_test, self.y_pred, multioutput='uniform_average')
-        self.r2rv = r2_score(self.y_test, self.y_pred, multioutput='raw_values')
+        self.r2vw = r2_score(self.y_test, self.y_pred,
+                             multioutput='variance_weighted')
+        self.r2ua = r2_score(self.y_test, self.y_pred,
+                             multioutput='uniform_average')
+        self.r2rv = r2_score(self.y_test, self.y_pred,
+                             multioutput='raw_values')
 
     def get_model_scores(self):
         return ['Support vector', self.evs, self.me, self.mae, self.mse, self.msle, self.mape, self.mdae, self.r2vw, self.r2ua, self.r2rv]
@@ -151,9 +163,12 @@ class DecisionTree:
         self.msle = mean_squared_log_error(self.y_test, self.y_pred)
         self.mape = mean_absolute_percentage_error(self.y_test, self.y_pred)
         self.mdae = median_absolute_error(self.y_test, self.y_pred)
-        self.r2vw = r2_score(self.y_test, self.y_pred, multioutput='variance_weighted')
-        self.r2ua = r2_score(self.y_test, self.y_pred, multioutput='uniform_average')
-        self.r2rv = r2_score(self.y_test, self.y_pred, multioutput='raw_values')
+        self.r2vw = r2_score(self.y_test, self.y_pred,
+                             multioutput='variance_weighted')
+        self.r2ua = r2_score(self.y_test, self.y_pred,
+                             multioutput='uniform_average')
+        self.r2rv = r2_score(self.y_test, self.y_pred,
+                             multioutput='raw_values')
 
     def get_model_scores(self):
         return ['Decision tree', self.evs, self.me, self.mae, self.mse, self.msle, self.mape, self.mdae, self.r2vw, self.r2ua, self.r2rv]
@@ -182,9 +197,12 @@ class RandomForest:
         self.msle = mean_squared_log_error(self.y_test, self.y_pred)
         self.mape = mean_absolute_percentage_error(self.y_test, self.y_pred)
         self.mdae = median_absolute_error(self.y_test, self.y_pred)
-        self.r2vw = r2_score(self.y_test, self.y_pred, multioutput='variance_weighted')
-        self.r2ua = r2_score(self.y_test, self.y_pred, multioutput='uniform_average')
-        self.r2rv = r2_score(self.y_test, self.y_pred, multioutput='raw_values')
+        self.r2vw = r2_score(self.y_test, self.y_pred,
+                             multioutput='variance_weighted')
+        self.r2ua = r2_score(self.y_test, self.y_pred,
+                             multioutput='uniform_average')
+        self.r2rv = r2_score(self.y_test, self.y_pred,
+                             multioutput='raw_values')
 
     def get_model_scores(self):
         return ['Randon forest', self.evs, self.me, self.mae, self.mse, self.msle, self.mape, self.mdae, self.r2vw, self.r2ua, self.r2rv]
