@@ -1,7 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
-import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import explained_variance_score, max_error, mean_absolute_error, mean_squared_error, mean_squared_log_error
 from sklearn.metrics import mean_absolute_percentage_error, median_absolute_error, r2_score
