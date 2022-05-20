@@ -1,7 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
-import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import explained_variance_score, max_error, mean_absolute_error, mean_squared_error, mean_squared_log_error
 from sklearn.metrics import mean_absolute_percentage_error, median_absolute_error, r2_score
@@ -11,8 +10,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
 
 
 class Regression:
@@ -185,7 +182,7 @@ class RandomForest:
         self.y_test = y_test
 
         # Fit and test
-        regressor = RandomForestRegressor(n_estimators=100, random_state=0)
+        regressor = RandomForestRegressor(n_estimators=10, random_state=0)
         regressor.fit(self.X_train, self.y_train)
         self.y_pred = regressor.predict(self.X_test)
 
@@ -205,7 +202,7 @@ class RandomForest:
                              multioutput='raw_values')
 
     def get_model_scores(self):
-        return ['Randon forest', self.evs, self.me, self.mae, self.mse, self.msle, self.mape, self.mdae, self.r2vw, self.r2ua, self.r2rv]
+        return ['Random forest', self.evs, self.me, self.mae, self.mse, self.msle, self.mape, self.mdae, self.r2vw, self.r2ua, self.r2rv]
 
     def regressor(self):
         return self.regressor
