@@ -31,8 +31,9 @@ class Regression:
         self.final_regressor=self.models[selection][1]
 
     def predict(self,sample):
-        sc_sample = self.sc.fit_transform(sample)
+        sc_sample = self.sc.transform(sample)
         return self.final_regressor.predict(sc_sample)
+  
 
 
     def run(self):
