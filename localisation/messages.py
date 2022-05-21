@@ -16,3 +16,6 @@ class en():
 
     regression_legend = 'Metrics legend:'
     regression_result_message = 'Comparison of the accuracy of different regression algorithms using several metrics:'
+
+    model_selection_message='Which model do you want to use:'
+    model_selection_query='Please select one:'

@@ -43,7 +43,18 @@ class AdvancedTestSuite(unittest.TestCase):
         else:
             exit
 
-        self.assertIsNone(aiwf.run_wf(test_case))
+        #self.assertIsNone(aiwf.run_wf(test_case))
+        model=aiwf.run_wf(test_case)
+
+        test=test_case.iloc[0]
+
+        print('')
+        print('Sample details:')
+        print(test)
+        test.pop('Profit')
+
+        pred=model.predict(np.array(test).reshape(1,-1))
+        print(pred)
 
 
 if __name__ == '__main__':

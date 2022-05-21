@@ -14,9 +14,10 @@ def run_wf(df):
     df_columns = list(df.columns)
     print(localisation.messages.df_columns_list_message)
     for i in range(0, len(df_columns), 1):
-        print('   [', i + 1, ']', df_columns[i])
-
+        print('   [', i + 1, ']', df_columns[i]) 
     df_column_label_index = user_input_with_validation(localisation.messages.df_select_label_message, range(1, len(df_columns) + 1), 1)
+    print('')
+
     # Create feature and label dataframes.
     y = df[df_columns[df_column_label_index]]
     X = df.copy()
@@ -24,19 +25,26 @@ def run_wf(df):
 
     # Ask for test test_size
     test_size = user_input_with_validation(localisation.messages.range_message, range(0, 2), 2)
+    print('')
 
     print(localisation.messages.problem_type_message)
     for i in range(0, len(localisation.messages.problem_types), 1):
         print('   [', i + 1, ']', localisation.messages.problem_types[i])
     problem_type = user_input_with_validation(localisation.messages.problem_type_query, range(1, len(localisation.messages.problem_types) + 1), 1)
+    print('')
 
     if localisation.messages.problem_types[problem_type] == 'Regression':
         model = Regression(test_size, X.values, y.values)
     else:
         model = Classification(test_size, X.values, y.values)
 
-    model.run()
-
+    models=model.run()
+    print(localisation.messages.model_selection_message)
+    for i in range(0,len(models),1):
+        print('   [ ',str(i+1),' ] ',models[i][0])
+    model_selection=user_input_with_validation(localisation.messages.model_selection_query,range(1,len(models)+1),1)
+    model.select(model_selection)
+    return model
 
 def user_input_with_validation(message, response_range, range_type):
     block = 1
